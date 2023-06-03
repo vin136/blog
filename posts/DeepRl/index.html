@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.361">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vinay Varma">
+<meta name="dcterms.date" content="2021-02-21">
+
+<title>Vinay Varma - Deep Reinforcement Learning - Theory</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Vinay Varma</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/vin136" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/vinnuvinay008" rel="" target=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/vinayvarma-k/" rel="" target=""><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#basics" id="toc-basics" class="nav-link active" data-scroll-target="#basics">Basics</a>
+  <ul>
+  <li><a href="#train-a-linear-regression-model-using-gradient-descent." id="toc-train-a-linear-regression-model-using-gradient-descent." class="nav-link" data-scroll-target="#train-a-linear-regression-model-using-gradient-descent.">Train a linear regression model using gradient-descent.</a></li>
+  <li><a href="#adding-inductive-biases---convolutions-and-recurrent-networks." id="toc-adding-inductive-biases---convolutions-and-recurrent-networks." class="nav-link" data-scroll-target="#adding-inductive-biases---convolutions-and-recurrent-networks.">Adding Inductive biases - convolutions and recurrent networks.</a></li>
+  <li><a href="#self-attention" id="toc-self-attention" class="nav-link" data-scroll-target="#self-attention">Self-Attention</a></li>
+  </ul></li>
+  <li><a href="#deep-rl---theory" id="toc-deep-rl---theory" class="nav-link" data-scroll-target="#deep-rl---theory">Deep RL - Theory</a>
+  <ul>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation">Motivation</a></li>
+  <li><a href="#problem" id="toc-problem" class="nav-link" data-scroll-target="#problem">Problem</a></li>
+  <li><a href="#bellmann-equation-and-mdps" id="toc-bellmann-equation-and-mdps" class="nav-link" data-scroll-target="#bellmann-equation-and-mdps">Bellmann Equation and MDP’s</a></li>
+  <li><a href="#search-for-optimal-state-values." id="toc-search-for-optimal-state-values." class="nav-link" data-scroll-target="#search-for-optimal-state-values.">Search for optimal State Values.</a></li>
+  </ul></li>
+  <li><a href="#value-iteration" id="toc-value-iteration" class="nav-link" data-scroll-target="#value-iteration">Value Iteration</a></li>
+  <li><a href="#policy-iteration-pi" id="toc-policy-iteration-pi" class="nav-link" data-scroll-target="#policy-iteration-pi">Policy Iteration (PI)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Deep Reinforcement Learning - Theory</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">ml</div>
+    <div class="quarto-category">rl</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vinay Varma </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 21, 2021</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>I plan on to write series of posts explaining key ideas in Modern Reinforcement Learning(RL). Current post covers basics of deep learning,followed by an introduction to RL Theory.(Thourougly proves two key algorithms for learning in RL setting - Value Iteration and Policy Iteration.). If you prefer a more practical introduction refer <a href="https://vinayvarma.work/reinforcement%20learning/2020/05/06/Q-Learning.html">this</a>.</p>
+<p><code>Note</code> : This is not intended to be the first introduction to deep learning. Here I just provide a self-contained summary. Only hard prerequisite is to have good intuitions for <code>matrix multiplication</code> and the notion of <code>taking a derivative</code>. Otherwise refer to <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">Essence of linear algebra</a> and <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr">Calculus</a></p>
+<section id="basics" class="level2">
+<h2 class="anchored" data-anchor-id="basics">Basics</h2>
+<p>Many deep learning models follow a simple recipe:</p>
+<pre><code>1. Gather the data.
+2. Define learnable parameters. And specify how they will interact with the data.(architecture)
+3. Define a loss function to minimize.
+4. Adjust the parameters until satisfied.</code></pre>
+<section id="train-a-linear-regression-model-using-gradient-descent." class="level3">
+<h3 class="anchored" data-anchor-id="train-a-linear-regression-model-using-gradient-descent.">Train a linear regression model using gradient-descent.</h3>
+<p>Here we will see how we can perform all the above steps starting with the most barebones implementation. Note that the procedure outlined here is general purpose - meaning the way we adjust <code>parameters</code> is going to remain same irrecpective of the modality of the data, details of the loss function or the architecture.</p>
+<p>Step 1. Gather the data</p>
+<p>Let’s generate some fake data.Let’s assume that the data is coming from <span class="math inline">\(y = 2*x1 - 4.2*x2 + 1 + noise(measurement error)\)</span>. This can be more succintly represented in vector notation : <span class="math display">\[y = \begin{bmatrix} x1 \\ x2 \end{bmatrix} . \begin{bmatrix} 2 \\ -4.2 \end{bmatrix} + 1\]</span></p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_data(<span class="op">*</span>params,const<span class="op">=</span><span class="va">None</span>,rows<span class="op">=</span><span class="dv">1000</span>):</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#number of features in the input</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    dim <span class="op">=</span> <span class="bu">len</span>(params)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.random.normal(<span class="dv">0</span>,<span class="fl">0.3</span>,(rows,dim))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> x<span class="op">@</span>np.array([params]).T</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> const:</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        y <span class="op">+=</span> np.array([const])</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x,y</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>x,y <span class="op">=</span> get_data(<span class="dv">2</span>,<span class="op">-</span><span class="fl">4.2</span>,const<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>x.shape,y.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>((1000, 2), (1000, 1))</code></pre>
+</div>
+</div>
+<p>Step 2. Define learnable parameters. And specify how they will interact with the data.(architecture)</p>
+<p>Now we aim to learn the right coefficients to approximate the data generation process. First let’s look at some code.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start with a random guess that respects the sanctity of the data.i.e our inputs are of dimension 1000*2 </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># outputs are 1000*1. Multiplying inputs by a 2*1 matrix(weights) and adding a constant(bias) is the simplest way</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># to ensure an output of 1000*1. </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># initial guess</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>init_weights <span class="op">=</span> np.array([[<span class="fl">0.</span>,<span class="op">-</span><span class="fl">1.</span>]]) <span class="co">#shape -&gt; 1*2</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>init_bias <span class="op">=</span> np.array([<span class="fl">0.</span>])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#expected output</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> give_expected_output(inpt,weights,bias):</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ((inpt<span class="op">@</span>weights.T) <span class="op">+</span> bias)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> give_expected_output(x,init_weights,init_bias)<span class="co">#shape -&gt; 1000*1</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_error(out,expected_out):</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.mean((expected_out <span class="op">-</span> out)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>get_error(out,y) <span class="co"># IF WE CAN DRIVE THIS NUMBER DOWN TO ZERO VIA A GENERAL PURPOSE PROCESS,WE ARE GOOD TO GO</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>2.121630476687219</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_grads(weights,bias,x,y,loss_func<span class="op">=</span><span class="st">'squared_loss'</span>):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Just taking the mathematical gradient as defined by the model.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> loss_func <span class="op">==</span> <span class="st">'squared_loss'</span>:</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        weights_grad <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>np.mean((x<span class="op">@</span>weights.T <span class="op">+</span> bias <span class="op">-</span> y)<span class="op">*</span>weights)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        bias_grad <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>np.mean((x<span class="op">@</span>weights.T <span class="op">+</span> bias <span class="op">-</span> y))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Sorry I'm not yet scalable enough for arbitrary loss functions"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights_grad,bias_grad</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>grad_init_weights,grad_bias <span class="op">=</span> get_grads(init_weights,init_bias,x,y,loss_func <span class="op">=</span> <span class="st">'squared_loss'</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> learn(x,y,init_weights,init_bias,loss_func,lr<span class="op">=</span><span class="fl">0.001</span>,epochs<span class="op">=</span><span class="dv">5000</span>):</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> give_expected_output(x,init_weights,init_bias)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    error <span class="op">=</span> loss_func(out,y)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">#print(f'initial error, epoch 0: {error}')</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    errors <span class="op">=</span> [error]</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    pres_lr <span class="op">=</span> lr</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        weight_grad,bias_grad <span class="op">=</span> get_grads(init_weights,init_bias,x,y)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        init_weights <span class="op">-=</span> weight_grad<span class="op">*</span>pres_lr</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        init_bias <span class="op">-=</span> bias_grad<span class="op">*</span>pres_lr</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> give_expected_output(x,init_weights,init_bias)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        error <span class="op">=</span> loss_func(out,y)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.mean(weight_grad)<span class="op">&lt;</span><span class="fl">0.0001</span>:</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>            pres_lr <span class="op">=</span> pres_lr<span class="op">*</span><span class="dv">2</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        errors.append(error)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> errors,init_weights,init_bias</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>errors,final_weights,final_bias <span class="op">=</span> learn(x,y,init_weights,init_bias,get_error)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>plt.plot(errors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>final_weights,final_bias</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>(array([[-0.82604061, -1.82604061]]), array([0.97582166]))</code></pre>
+</div>
+</div>
+<p>In the above code what happens if ‘lr’ is not dynamically adjusted ? Now, imagine an arbitrary architecture (interaction between parameters and data). Can we have a general purpose <code>get_grads</code> function that efficiently evaluates the gradient for this network ?. For many such practical concerns, I suggest going through this free course from <a href="https://course.fast.ai/">fast.ai</a>. Modern libraries like Pytorch provide simple abstractions to ignore all such details. Now some general intuitions towards coming up with architectures for learning more complex functions.</p>
+</section>
+<section id="adding-inductive-biases---convolutions-and-recurrent-networks." class="level3">
+<h3 class="anchored" data-anchor-id="adding-inductive-biases---convolutions-and-recurrent-networks.">Adding Inductive biases - convolutions and recurrent networks.</h3>
+<p>In the below feedforward network each neuron is connected to all the neurons in the previous layer. No inductive biases in the connectivity.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="my_icons/fc.png" title="Credit: https://atcold.github.io/pytorch-Deep-Learning/en/week03/03-3/" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">FeedForward</figcaption>
+</figure>
+</div>
+<p><code>Locality</code> : For almost all natural signals it is easier to predict the future using recent past compared to any earlier versions. <code>Locality</code> allows for the sparsity of weights. We can put faraway weights to zero. In the below figure the <code>15</code> weights of the first layer is reduced to <code>9</code>. It’s also important to be aware of the concept of <code>receptive field</code>(RF). <code>RF</code> of layer <code>a</code> w.r.t <code>b</code> is simply the number of neurons in <code>a</code> that influence the outputs of layer b.</p>
+<p><img src="my_icons/sparsity.png" title="Credit: https://atcold.github.io/pytorch-Deep-Learning/en/week03/03-3/" class="img-fluid"></p>
+<p><code>Stationarity</code> : Same patterns are repeated again and again. We don’t need connections from the inputs far down. <code>Stationarity</code> implies weight sharing.</p>
+<p><img src="my_icons/parashare.png" title="Credit: https://atcold.github.io/pytorch-Deep-Learning/en/week03/03-3/" class="img-fluid"></p>
+<p><code>Compositionality</code>: There are hierarchies. Letters make up words,words make up sentences and so on. <code>Compisitionality</code> implies deeper networks.</p>
+<p>Now We will see how popular building blocks like CNN’S and RNN’S leverage these properties. <code>CNN</code>’s are a linear layer with lots of <code>weight sharing</code> and <code>sparsity</code>. RNN’s just use <code>weight sharing</code> but BPTT takes the <code>locality</code> into account.</p>
+<p>CNN = linear layer + weight sharing + sparsity.</p>
+<p>Consider convolving over a 4 * 4 inputs with a 3 * 3 kernel with a unit stride as presented below. <img src="my_icons/cnn.png" title="Credit:https://arxiv.org/pdf/1603.07285.pdf" class="img-fluid"></p>
+<p>If I stack the 2-d input into a 1-d vector by unrolling left to right and top to bottom, the convolution can be represented as a matrix multiplication. <img src="my_icons/conv_mat.png" title="Credit:https://arxiv.org/pdf/1603.07285.pdf" class="img-fluid"></p>
+<p>The <code>zeros</code> along the columns encode <code>locality</code> while the replication of same weights along the rows account for <code>stationarity</code>. If the above properties doesn’t make sense for your input , then CNN’s aren’t the right choice.</p>
+<p>RNN = linear layer + weight sharing + BPTT(Back-prop through time)</p>
+<p><img src="my_icons/rnn.png" title="Credit:https://atcold.github.io/pytorch-Deep-Learning/en/week06/06-3/" class="img-fluid"></p>
+<p>RNN’s are used for sequence data. In the above figure the <code>arrow</code> indicates matrix multiplication. The hidden state <code>h(t)</code> at time <code>t</code> is equal to Affine_transform(x(t)) + Affine_transform(h(t-1)).(<code>Note</code>: Affine_transform refers to matrix multiplication). The following code will makes it all clear.</p>
+<p>Consider the following sequence :</p>
+<p>’Hey Jude, don’t make it bad.</p>
+<p>Take a sad song and make it better.</p>
+<p>Remember to let her into your heart,</p>
+<p>Then you can start to make it better. ’</p>
+<p>Now we would want to classify it into either positive or negative sentiment. Ideally we would have a collection of such sequences with their corresponding labels. Here note that the number of words in each sequence need not be same. A naive approach would be to string all the words in a sequence to a single column,and run it through a fullyconnected network.(variable sequence length still poses a problem.) Let’s see how an RNN can accomplish this with much less parameters.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> RNN(nn.Module):</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,i_sz,h_sz,out_sz):</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.i_sz <span class="op">=</span> i_sz</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.h_sz <span class="op">=</span> h_sz</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.out_sz <span class="op">=</span> out_sz</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.input_hidden <span class="op">=</span> nn.Linear(<span class="va">self</span>.i_sz,<span class="va">self</span>.h_sz)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.hidden_hidden <span class="op">=</span> nn.Linear(<span class="va">self</span>.h_sz,<span class="va">self</span>.h_sz)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.hidden_output <span class="op">=</span> nn.Linear(<span class="va">self</span>.h_sz,<span class="va">self</span>.out_sz)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>,x):</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        h <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        bs,seq_len,emb_sz <span class="op">=</span> x.shape</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(seq_len):</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>            <span class="co"># This just adds the hidden representation which is a function of all the words fed until t-1 to the </span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>            <span class="co">#word at t</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>            h <span class="op">=</span> h <span class="op">+</span> <span class="va">self</span>.input_hidden(x[:,i,:])</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Stores the hidden representation for next  word in seq.</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>            h <span class="op">=</span> F.relu(<span class="va">self</span>.hidden_hidden(h))</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.hidden_output(h)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>        </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>bs <span class="op">=</span> <span class="dv">101</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>seq_len <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>vector_len <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>seq_1 <span class="op">=</span> torch.rand(bs,seq_len,vector_len)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>rnn <span class="op">=</span> RNN(i_sz <span class="op">=</span> vector_len,h_sz<span class="op">=</span><span class="dv">20</span>,out_sz<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> rnn(seq_1)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>out.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>torch.Size([101, 1])</code></pre>
+</div>
+</div>
+<p>This can be seen as a two layer network.The last layer converts <code>h_sz</code> to the output dimension, while the first layer maps <code>i_sz</code> to <code>h_sz</code>. But, the first layer only uses weight matrices of size 100 * 20,20 * 20. Totalling of around 2400 parameters. Our naive version would have seq_len * i_sz * h parameters.(around 20000). Moreover, In RNN number of paramenters is independent of sequence length.</p>
+<p>The above model is just an instantiation of <code>weight sharing</code> for sequential data. We haven’t still leveraged the <code>locality</code> aspect (<code>sparsity</code>).</p>
+<p>Moreover,eventhough we only have 3 different weight matrices,the actual number of layers is proportional to the <code>size</code> of the <code>for loop</code>. Aside from being very slow and memory intensive, gradients of loss w.r.t initial operations( i = 0) very unlikely to be stable.(According to the chain rule of derivatives the gradient of loss w.r.t first matrix multiplication would involve multiplying atleast <code>seq_len</code> of partial derivatives. The resultant can easily explode or vanish.) What if we only take gradients for the last <code>n</code> operations. This is also called <code>Truncated BPTT</code>. Here’s the modified <code>forward</code> function.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward(<span class="va">self</span>,x):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>        h <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        bs,seq_len,emb_sz <span class="op">=</span> x.shape</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(seq_len):</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>            <span class="co"># This just adds the hidden representation which is a function of all the words fed until t-1 to the </span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>            <span class="co">#word at t</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>            h <span class="op">=</span> h <span class="op">+</span> <span class="va">self</span>.input_hidden(x[:,i,:])</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Stores the hidden representation for next  word in seq.</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>            h <span class="op">=</span> F.relu(<span class="va">self</span>.hidden_hidden(h))</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> i<span class="op">%</span><span class="dv">3</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>                h <span class="op">=</span> h.detach()</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.hidden_output(h)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This just flushes the memory for the backward pass after every 3 steps. Aside from solving obvious practical problems,this also has regularizing effects. We are implicitly encoding our bias - you need not look past the last 3 points in the sequence - a.k.a <code>locality</code>.</p>
+</section>
+<section id="self-attention" class="level3">
+<h3 class="anchored" data-anchor-id="self-attention">Self-Attention</h3>
+<p>Consider a sequence of vectors (<span class="math inline">\(x_1\)</span>,<span class="math inline">\(x_2\)</span>..<span class="math inline">\(x_n\)</span>). It helps to imagine them as vectors corresponding to sequence of words. If you can bear with me,the following operation converts them into another sequence of vectors (<span class="math inline">\(y_1\)</span>,<span class="math inline">\(y_2\)</span>..<span class="math inline">\(y_n\)</span>) of same dimension.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Two column vectors(each with dimension of 3*1)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.tensor <span class="im">as</span> tensor</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> torch.cat([tensor([[<span class="fl">1.</span>],[<span class="fl">2.</span>],[<span class="fl">3.</span>]]),tensor([[<span class="fl">4.</span>],[<span class="fl">5.</span>],[<span class="fl">6.</span>]]),tensor([[<span class="fl">7.</span>],[<span class="fl">8.</span>],[<span class="fl">9.</span>]]),tensor([[<span class="fl">10.</span>],[<span class="fl">11.</span>],[<span class="fl">12.</span>]])],dim<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> torch.rand(<span class="dv">4</span>,<span class="dv">4</span>) <span class="co"># a random matrix</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> X<span class="op">@</span>matrix</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>X.shape,matrix.shape,Y.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>(torch.Size([3, 4]), torch.Size([4, 4]), torch.Size([3, 4]))</code></pre>
+</div>
+</div>
+<p>Now,let’s generate the same <code>V</code> with a fancier set of operations.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>temp <span class="op">=</span> X.T<span class="op">@</span>X</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>Y_new <span class="op">=</span> X<span class="op">@</span>temp.T</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>Y_new.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>torch.Size([3, 4])</code></pre>
+</div>
+</div>
+<p>Here <code>temp.T</code> is acting as <code>matrix</code>. This also removes the need for additional initialization. This operation also lends to the following intution:</p>
+<ul>
+<li><p><code>temp</code> is the dot product of each column vector in U with all the vector within it. The captures the measure of similarity between the vectors.</p></li>
+<li><p><code>Y_new</code> is just a linear combination of U with the corresponding weights from the <code>temp</code>.</p></li>
+<li><p>In other words, <span class="math inline">\(y_i =\sum_{j} w_{ij}.x_{j}\)</span> where <code>w</code>’s are taken frow the rows of <code>temp</code>.</p></li>
+</ul>
+<p>In the above figure each vector <span class="math inline">\(x_{i}\)</span> is used three times. Let’s take <span class="math inline">\(x_{2}\)</span> for illustration:</p>
+<ul>
+<li>To get <span class="math inline">\(w_{22}\)</span></li>
+<li>Similarly to get weight’s required for all the other outputs <span class="math inline">\(y_1\)</span>,<span class="math inline">\(y_3\)</span> and <span class="math inline">\(y_4\)</span></li>
+<li><span class="math inline">\(x_2\)</span> is also used in linear weighting with <code>w</code>’s to get <span class="math inline">\(y_2\)</span></li>
+</ul>
+<p>But, In the whole compution we are not learning any weights. Everything is being generated from the input. We can introduce three different set of <code>x</code>’s for each of the above operations. Let’s initialize three square matrices <span class="math inline">\(W_k\)</span>,<span class="math inline">\(W_q\)</span>,<span class="math inline">\(W_v\)</span>, each of size (4,4).</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>w_k,w_q,w_v <span class="op">=</span> torch.rand(<span class="dv">4</span>,<span class="dv">4</span>),torch.rand(<span class="dv">4</span>,<span class="dv">4</span>),torch.rand(<span class="dv">4</span>,<span class="dv">4</span>) <span class="co"># learnable parameters</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>keys,queries,values <span class="op">=</span> X<span class="op">@</span>w_k,X<span class="op">@</span>w_q,X<span class="op">@</span>w_v</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># This is the naming convention used in the literature.</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>temp <span class="op">=</span> queries.T<span class="op">@</span>keys</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>Y_new <span class="op">=</span>values<span class="op">@</span>temp.T</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>Y_new.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>torch.Size([3, 4])</code></pre>
+</div>
+</div>
+<p>That’s it. <code>Self-attention</code> refers to performing above operations. We additionally normalize the weights in the <code>temp</code> with <code>softmax</code>. Further, We can also use sets of matrices (<span class="math inline">\(W_k\)</span>,<span class="math inline">\(W_q\)</span>,<span class="math inline">\(W_v\)</span>),essentially replicationg self-attention with different weight matrices. The resulting outputs can be concatenated and be passed through a linear layer to get back the orginal dimension.(This is called <code>multi-head attention</code>)</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttention(nn.Module):</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,feat_sz,n_heads<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># for n_heads we need the corresponding number of weight matrices of size feat_sz*feat_sz to get new</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">#set of (keys,queries,values),Computationally this can be fused inside a single linear operation.</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.heads <span class="op">=</span> n_heads</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.get_keys <span class="op">=</span> nn.Linear(feat_sz,feat_sz<span class="op">*</span>n_heads,bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.get_queries <span class="op">=</span> nn.Linear(feat_sz,feat_sz<span class="op">*</span>n_heads,bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.get_values <span class="op">=</span> nn.Linear(feat_sz,feat_sz<span class="op">*</span>n_heads,bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.comb_heads <span class="op">=</span> nn.Linear(n_heads<span class="op">*</span>feat_sz,feat_sz)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>,x):</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># typically data is fed with features along the `columns`.</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>        bs,n_seq,feat_sz <span class="op">=</span> x.size()</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>        keys <span class="op">=</span> <span class="va">self</span>.get_keys(x).view(bs,n_seq,<span class="va">self</span>.heads,feat_sz)</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>        queries <span class="op">=</span> <span class="va">self</span>.get_queries(x).view(bs,n_seq,<span class="va">self</span>.heads,feat_sz)</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>        values <span class="op">=</span> <span class="va">self</span>.get_values(x).view(bs,n_seq,<span class="va">self</span>.heads,feat_sz)</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># `torch.bmm` performs matrix multiplication for a given batch.It is efficient to squeeze n_heads along</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># with batches and perform the calculation at once.</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>        keys <span class="op">=</span> keys.transpose(<span class="dv">1</span>,<span class="dv">2</span>).contiguous().view(bs<span class="op">*</span><span class="va">self</span>.heads,n_seq,feat_sz)</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>        queries <span class="op">=</span> queries.transpose(<span class="dv">1</span>,<span class="dv">2</span>).contiguous().view(bs<span class="op">*</span><span class="va">self</span>.heads,n_seq,feat_sz)</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>        values <span class="op">=</span> values.transpose(<span class="dv">1</span>,<span class="dv">2</span>).contiguous().view(bs<span class="op">*</span><span class="va">self</span>.heads,n_seq,feat_sz)</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>        dot <span class="op">=</span> torch.bmm(queries,keys.transpose(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>        <span class="co">#Rescaling the elements to control the scale</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>        dot <span class="op">=</span> dot<span class="op">/</span>math.sqrt(feat_sz)</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>        dot <span class="op">=</span> F.softmax(dot,dim<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> torch.bmm(dot,values).view(bs,<span class="va">self</span>.heads,n_seq,feat_sz)</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>        <span class="co">#reshaping</span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> out.transpose(<span class="dv">1</span>,<span class="dv">2</span>).contiguous().view(bs,n_seq,<span class="va">self</span>.heads<span class="op">*</span>feat_sz)</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>        <span class="co"># passing through a linear layer to combine all the heads</span></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> <span class="va">self</span>.comb_heads(out)<span class="co"># gives bs,n_seq,n_heads</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>input_ <span class="op">=</span> X.unsqueeze(<span class="dv">0</span>).transpose(<span class="dv">1</span>,<span class="dv">2</span>) <span class="co"># input with features arranged in columns(shape = [1, 4, 3])</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>sa <span class="op">=</span> SelfAttention(feat_sz<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> sa(input_)<span class="co"># simple attention</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>mha <span class="op">=</span> SelfAttention(feat_sz<span class="op">=</span><span class="dv">3</span>,n_heads<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>Y_6 <span class="op">=</span> sa(input_)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>Y.shape,Y_6.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>(torch.Size([1, 4, 3]), torch.Size([1, 4, 3]))</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Note: Attention is first introduced to deal with sequences in the context of natural language. But, nothing in the above implementation handles <code>order</code>. It just maps a <code>set of vectors</code> to another. To enforce order, we can simply add a <code>position vector</code> to our inputs.</p>
+</blockquote>
+<p>Above ideas mark the end of the theoretical minimum. These will be needed only when you are trying to solve any of the interesting applications discussed below with RL.</p>
+</section>
+</section>
+<section id="deep-rl---theory" class="level2">
+<h2 class="anchored" data-anchor-id="deep-rl---theory">Deep RL - Theory</h2>
+<section id="motivation" class="level3">
+<h3 class="anchored" data-anchor-id="motivation">Motivation</h3>
+<p>Deep Learning allows for learning generalizable mappings between input and output. In supervised setting we are given a <code>fixed dataset</code> D = {<span class="math inline">\((x_{i},y_{i})\)</span>},and are tasked to predict <span class="math inline">\(y_{i}\)</span> using <span class="math inline">\(x_{i}\)</span>. Thus, we know the groud truth for all input data. This let’s us formulate a <code>loss</code> that reflects our dissatisfaction with the predicted <code>outputs</code> and optimize over it. But, consider how we humans learn to perform any new task ? The dataset and the learning signal comes sequentially and is also dependent on our actions. We don’t have prepared datasets in real life. We learn from experience. <code>RL</code> deals with learning under this natural setting. The key difference here is that the dataset is not <code>constant</code>, It changes everytime, contingent on your actions and the stochasticity in the environment. To make this clear, consider learning to play a video game. The pixels (call it <code>state</code>) and the score you receive ( call it <code>reward</code>) cannot be predetermined until you actually go through the experience. Here the dataset D = {<span class="math inline">\((state_{i},reward_{i})\)</span>} is not same everytime you play the game. <code>RL</code> provides a formalism for learning optimal decision making. This will become clear when we see some concrete examples and code. But combing these techniques with <code>Neural networks</code> has given us general algorithms that <code>learn to play atari games</code>, <code>beat world champions at Go</code> and <code>train robots to learn simple tasks</code>. <img src="my_icons/rlsuc.png" title="Credit: http://rail.eecs.berkeley.edu/deeprlcourse/static/slides/lec-1.pdf" class="img-fluid"></p>
+</section>
+<section id="problem" class="level3">
+<h3 class="anchored" data-anchor-id="problem">Problem</h3>
+<p>Consider the Following optimization problem. Find the shortest path from state <span class="math inline">\(s_0\)</span> to goal <span class="math inline">\(g\)</span>,where the edges indicate the cost/distance ?</p>
+<p><img src="my_icons/sp.png" title="Credit: https://nanjiang.cs.illinois.edu/files/cs598/slides_intro_f20.pdf" class="img-fluid"></p>
+<p>Here taking a greedy approach will fail as actions will have long-term consequences. Solving the above problem efficiently requires realizing that <code>the distance to any node along the shortest path from source to destination is also shortest path</code>. In the above example the shortest path to <code>g</code> should either be through <code>d</code> or <code>f</code>.(one of the incoming edges). Let the shortest distance from a node <code>s</code> to <code>g</code> be given by <span class="math inline">\(v^{*}(s)\)</span>. Then the last edge of the shortest path should come from evaluating <span class="math inline">\(v^{*}(f))\)</span> and <span class="math inline">\(v^{*}(d)\)</span>, where <span class="math inline">\(v^{*}(f) = 1 + v^{*}(g)\)</span> and <span class="math inline">\(v^{*}(d) = min(3+v^{*}(g),1+v^{*}(f))\)</span>. This backtracking or dynamic programming approach of finding one edge at a time is illustrated below.</p>
+<p><img src="my_icons/op.png" title="Credit: https://nanjiang.cs.illinois.edu/files/cs598/slides_intro_f20.pdf" class="img-fluid"></p>
+<p>Now, for each action we take, let us also add a <code>transition probability</code> that defines the likelihood of ending up in any of the available states given the action. Here, for states <code>c</code> and <code>e</code> we added some randomness. This will let us model more realistic scenarios. Consider an <code>RL agent</code> driving your car. The consequences of any action (eg: Turning the steering to the right given the visual view of the road.) can only be modeled probabilistically.</p>
+<p><img src="my_icons/ssp.png" title="Credit: https://nanjiang.cs.illinois.edu/files/cs598/slides_intro_f20.pdf" class="img-fluid"></p>
+<p>Here by weighting w.r.t the transition probabilities we can recover <span class="math inline">\(v^{*}()\)</span> for all states. Optimal policy is again achieved by acting greedily w.r.t <span class="math inline">\(v^{*}()\)</span>. For example , <span class="math inline">\(v^{*}(c) = min(4+0.3*v^{*}(e)+0.7*v^{*}(d),2+v^{*}(e))\)</span>. In RL, we call this <code>Bellmann Equation</code>.</p>
+<p><img src="my_icons/sspb.png" title="Credit: https://nanjiang.cs.illinois.edu/files/cs598/slides_intro_f20.pdf" class="img-fluid"></p>
+<p><img src="my_icons/be.png" title="Credit: https://nanjiang.cs.illinois.edu/files/cs598/slides_intro_f20.pdf" class="img-fluid"></p>
+<p>Modern <code>Deep RL</code> deals with solving this stochastic version of the problem when the transition probabilities are not available and the number of possible states is very large. Consider the following video game playing scenario. The pixels on the screen at any timestamp can be taken as <code>state</code>. The game rules provides list of <code>possible actions</code> and the corresponding <code>reward</code>(increase in score).</p>
+<p><img src="my_icons/vid.png" title="Credit: https://nanjiang.cs.illinois.edu/files/cs598/slides_intro_f20.pdf" class="img-fluid"></p>
+<p>By the end of this module we will develop all the machinery to understand the algorithms that learn optimal(or good) policies for this general case.</p>
+</section>
+<section id="bellmann-equation-and-mdps" class="level3">
+<h3 class="anchored" data-anchor-id="bellmann-equation-and-mdps">Bellmann Equation and MDP’s</h3>
+<p>In this section we will devolop some theory. First let’s define an object called Markov Decision Process (MDP),given by the tuple of <span class="math inline">\((S,A,P,R,\gamma)\)</span>. Here discounting factor <span class="math inline">\(\gamma\)</span> is largely a mathematical convenience as it helps to bound the <code>total reward</code>. Any reward <span class="math inline">\(r_t\)</span> received at timestamp <code>t</code> is multiplied by <span class="math inline">\(\gamma^{t-1}\)</span>, that is we prefer immediate rewards over faraway ones. The term <code>Markov</code> refers to the fact that given present state <code>s</code> and action taken from there <code>a</code>, next state is independent of the past trajectory. Consider the example of <code>stochastic shortest path</code> but with the goal state <code>g</code> infinitely far away. In that setting we want to maximize the average reward we will get starting from any state.</p>
+<p>The only <code>knob</code> agent has is policy <span class="math inline">\(\pi : S \rightarrow A\)</span>.(which of the possible actions to take). The environment dynamics (P and R) are not under agent’s control. For simplicity,let’s assume that rewards are bounded and positive. Let’s say that the agent has a policy <span class="math inline">\(\pi\)</span> and starts to intreract with the environment. The value function <code>v(s)</code> refers to the average reward starting from state <code>s</code> and following policy <span class="math inline">\(\pi\)</span>. Then <code>v(s)</code> for all the states satisfies a recursive definition as shown below. <img src="my_icons/bellmann.png" class="img-fluid"></p>
+<p>Thus finding <span class="math inline">\(v^{\pi}(s)\)</span> amounts to solving system of linear equation or in matrix notation finding the inverse of a matrix. But, we still need the proof for the existence of the inverse for <span class="math inline">\(I - \gamma.P^{\pi}\)</span>. Before going further, it’s important to thoroughly understand the bellmann equation : <span class="math inline">\(V^{\pi} = R^{\pi} + \gamma.P^{\pi}.V^{\pi}\)</span>. The deriviation involves observing the fact that once the agent takes initial action from state <code>s</code>, the transition probability will dictate it’s next state <code>s'</code>. From there, the average reward by definition is given by <code>v(s')</code>, leaving a recursive definition.</p>
+<p><img src="my_icons/matform.png" class="img-fluid"></p>
+<p>Below i have give the proof for the existence of inverse. If we recall, a matrix A(<span class="math inline">\(n * n\)</span>) multiplied by a column vector X (<span class="math inline">\(n * 1\)</span>) merely takes a linear combination of all the column vectors in A. Existence of inverse to <code>A</code> means that there doesnot exist a non-zero vector X, that can collapse A to a null vector. Using this fact and the traingular inequality on <span class="math inline">\(I - \gamma.P^{\pi}\)</span> completes the proof.</p>
+<p><img src="my_icons/proof.jpg" class="img-fluid"></p>
+</section>
+<section id="search-for-optimal-state-values." class="level3">
+<h3 class="anchored" data-anchor-id="search-for-optimal-state-values.">Search for optimal State Values.</h3>
+<p>Now let’s define <span class="math inline">\(v^{*}(s)\)</span> as the maximum expected reward that we can get from state <code>s</code> under <code>any policy</code>. Note that the above equation is defined on a particular policy or when the action from each state is fixed or if state transition probabilities are independent of <code>action taken</code>. Once we are able to extract these values, optimal policy becomes obvious. <code>Value Iteration</code> methods try to apprimate this <span class="math inline">\(V^{*}(s)\)</span>. They start with some arbitrary function like <span class="math inline">\(f(s) = 0 \forall s\)</span> and iteratively bring <span class="math inline">\(f\)</span> closer to <span class="math inline">\(V^{*}\)</span>. Let’s also define <span class="math inline">\(Q^{\pi}(s,a)\)</span> as the expected reward under the policy <span class="math inline">\(\pi\)</span>,when we take action <code>a</code> at state <code>s</code> and subsequently sample actions according to <span class="math inline">\(\pi\)</span>. Here <span class="math inline">\(\pi\)</span> is just a function that takes state <code>s</code> and action <code>a</code> and returns the corresponding probability <code>a</code> for taking that action. Similarly <span class="math inline">\(Q^{*}(s,a)\)</span> is also defined as the maximum Q that can be achieved under any policy. We often want <span class="math inline">\(Q^{*}\)</span> values over <span class="math inline">\(V^{*}\)</span> as simply choosing greedily w.r.t <span class="math inline">\(Q^{*}\)</span> gives the optimal policy. To see the advantage more clearly, Imagine an oracle that can give you <span class="math inline">\(V^{*}\)</span> for any <code>s</code>. Now, the agent starts at state <code>s</code> and is looking to take optimal action. It first has to take all possible actions from that state to see where it would end up. And for each subsequent state <code>s'</code> , it has to query the oracle to get <span class="math inline">\(V^{*}(s')\)</span>. Only after this we can determine the best action from initial state s as <span class="math inline">\(max_{a\in A}(r_1 + v^{*}(s'))\)</span>. But having <span class="math inline">\(Q^{*}\)</span> values let’s us choose this action directly by evaluating <span class="math inline">\(Q_{a\in A}^{*}(s,a)\)</span>. There exists a proof that for discounted infinite horizon MDP’s there exists a stationary and deterministic optimal policy for all states simultaneously. Let’s call this <span class="math inline">\(\pi^{*}\)</span>. It is easy to see that both <span class="math inline">\(V^{*}\)</span> and <span class="math inline">\(Q^{*}\)</span> will also satisfy a similar recursive relation called <code>Bellmann Optimality equations</code>.</p>
+<p><img src="my_icons/b.jpg" class="img-fluid"></p>
+</section>
+</section>
+<section id="value-iteration" class="level2">
+<h2 class="anchored" data-anchor-id="value-iteration">Value Iteration</h2>
+<p>Till now we have seen how we can solve for <code>V</code> for all states given a policy. But, Our objective is to find <code>V*</code> - the maximum return that can be achieved under any policy. The claim is that if we start with random values of <code>Q</code> and then do the following -</p>
+<ul>
+<li>Act greedily with respect to these values.</li>
+<li>Update these <code>Q</code> values using bellmann update rule.</li>
+<li>Repeat the process for some large number of times - H</li>
+</ul>
+<p>Will give us a policy <span class="math inline">\(Q^{*,H}\)</span>(greedy policy w.r.t Q values after H Steps) that is close to true Optimal Policy. In what follows is the proof of the claim.</p>
+<p><img src="my_icons/b2.jpg" class="img-fluid"></p>
+<p><img src="my_icons/vi1.jpg" class="img-fluid"></p>
+<p><img src="my_icons/vi2.jpg" class="img-fluid"></p>
+<p><img src="my_icons/vi3.jpg" class="img-fluid"></p>
+</section>
+<section id="policy-iteration-pi" class="level2">
+<h2 class="anchored" data-anchor-id="policy-iteration-pi">Policy Iteration (PI)</h2>
+<p>We also have an alternative algorithm that also converges to optimal policy called Policy Iteration.</p>
+<p><code>Note</code> : PI strictly converges to optimal policy after some steps which is not true for VI as it only get’s closer but never quite equals.</p>
+<p>The following derivation requires some explanation. First Here’s the claim of policy iteration algorithms.</p>
+<ul>
+<li>Start out with random policy.</li>
+<li>Evaluate <span class="math inline">\(Q^{\pi_{0}}\)</span> using bellmann update rule. (BOX 1).</li>
+<li>Greedy policy w.r.t to new Q values becomes your new policy.</li>
+</ul>
+<p>Performing above steps for large number of iterations would give us Optimal Policy - <code>Claim.</code> (In fact the claim is more subtle as given by <code>Policy Improvement Theorem</code>.</p>
+<p><code>Policy Improvement Theorem</code>: As given in below slide suggests that after every round of PI, the new policy has higher(or equal) <code>V</code> compared to old <code>for all states</code>.</p>
+<p>The proof involves manipulating <span class="math inline">\(\tau^{\pi}\)</span> (bellmann operator). We start out by consicely writing down PI algorithm -</p>
+<p><span class="math inline">\(Q^{\pi_{k}} = \tau^{\pi_{k}}.Q^{\pi_{k}}\)</span></p>
+<p>Note that bellmann optimality operator <span class="math inline">\(\tau\)</span>(involves taking <code>max</code> in next state) is defferent from bellmann operator <span class="math inline">\(\tau^{\pi}\)</span>. And substituting the latter with former would always result in a value higher or equal by definition. Since according to PI algorithm the new policy is the Greedy one w.r.t updated Q values, we have - <span class="math inline">\(\tau.Q^{\pi_{k}} = \tau^{\pi_{k+1}}.Q^{\pi_{k}}\)</span>. Later by recursively expanding <span class="math inline">\(Q^{\pi_{k}}\)</span>, we reach the fixed point of the <code>bellmann operator</code>.</p>
+<p><img src="my_icons/pi1.jpg" class="img-fluid"></p>
+<ul>
+<li>Alternative and more Intuitive proof:</li>
+</ul>
+<p><img src="my_icons/pia1.jpeg" class="img-fluid"></p>
+<p><img src="my_icons/pia2.jpeg" class="img-fluid"></p>
+<p><img src="my_icons/pia3.jpeg" class="img-fluid"></p>
+<p><img src="my_icons/pia4.jpeg" class="img-fluid"></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

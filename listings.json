@@ -2,8 +2,12 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/post-with-code/index.html",
-      "/posts/welcome/index.html"
+      "/posts/Linear-Algebra/index.html",
+      "/posts/collected-thoughts-3/index.html",
+      "/posts/collected-thoughts-2/index.html",
+      "/posts/DeepRl/index.html",
+      "/posts/DeepRl-prac/index.html",
+      "/posts/collected-thoughts-1/index.html"
     ]
   }
 ]

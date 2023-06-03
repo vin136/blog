@@ -1,19 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://vin136.github.io/blog/posts/post-with-code/index.html</loc>
-    <lastmod>2023-06-03T00:32:21.323Z</lastmod>
+    <loc>https://vin136.github.io/blog/posts/collected-thoughts-1/index.html</loc>
+    <lastmod>2023-06-03T03:26:27.622Z</lastmod>
   </url>
   <url>
-    <loc>https://vin136.github.io/blog/posts/welcome/index.html</loc>
-    <lastmod>2023-06-03T00:32:21.700Z</lastmod>
+    <loc>https://vin136.github.io/blog/posts/DeepRl/index.html</loc>
+    <lastmod>2023-06-03T03:26:28.565Z</lastmod>
+  </url>
+  <url>
+    <loc>https://vin136.github.io/blog/posts/Linear-Algebra/index.html</loc>
+    <lastmod>2023-06-03T03:26:29.273Z</lastmod>
+  </url>
+  <url>
+    <loc>https://vin136.github.io/blog/posts/collected-thoughts-2/index.html</loc>
+    <lastmod>2023-06-03T03:26:29.695Z</lastmod>
+  </url>
+  <url>
+    <loc>https://vin136.github.io/blog/posts/collected-thoughts-3/index.html</loc>
+    <lastmod>2023-06-03T03:26:30.174Z</lastmod>
+  </url>
+  <url>
+    <loc>https://vin136.github.io/blog/posts/DeepRl-prac/index.html</loc>
+    <lastmod>2023-06-03T03:26:30.693Z</lastmod>
   </url>
   <url>
     <loc>https://vin136.github.io/blog/index.html</loc>
-    <lastmod>2023-06-03T00:32:22.090Z</lastmod>
+    <lastmod>2023-06-03T03:26:31.234Z</lastmod>
   </url>
   <url>
     <loc>https://vin136.github.io/blog/about.html</loc>
-    <lastmod>2023-06-03T00:32:22.368Z</lastmod>
+    <lastmod>2023-06-03T03:26:31.488Z</lastmod>
   </url>
 </urlset>
