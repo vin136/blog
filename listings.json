@@ -2,6 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/deeplrrevision/index.html",
+      "/posts/experimentation/index.html",
       "/posts/Linear-Algebra/index.html",
       "/posts/collected-thoughts-3/index.html",
       "/posts/collected-thoughts-2/index.html",

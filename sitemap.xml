@@ -1,35 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://vin136.github.io/blog/posts/experimentation/index.html</loc>
+    <lastmod>2023-06-22T19:11:41.893Z</lastmod>
+  </url>
+  <url>
+    <loc>https://vin136.github.io/blog/posts/deeplrrevision/index.html</loc>
+    <lastmod>2023-06-22T19:11:42.254Z</lastmod>
+  </url>
+  <url>
     <loc>https://vin136.github.io/blog/posts/collected-thoughts-1/index.html</loc>
-    <lastmod>2023-06-03T03:26:27.622Z</lastmod>
+    <lastmod>2023-06-22T19:11:42.592Z</lastmod>
   </url>
   <url>
     <loc>https://vin136.github.io/blog/posts/DeepRl/index.html</loc>
-    <lastmod>2023-06-03T03:26:28.565Z</lastmod>
+    <lastmod>2023-06-22T19:11:43.401Z</lastmod>
   </url>
   <url>
     <loc>https://vin136.github.io/blog/posts/Linear-Algebra/index.html</loc>
-    <lastmod>2023-06-03T03:26:29.273Z</lastmod>
+    <lastmod>2023-06-22T19:11:44.069Z</lastmod>
   </url>
   <url>
     <loc>https://vin136.github.io/blog/posts/collected-thoughts-2/index.html</loc>
-    <lastmod>2023-06-03T03:26:29.695Z</lastmod>
+    <lastmod>2023-06-22T19:11:44.458Z</lastmod>
   </url>
   <url>
     <loc>https://vin136.github.io/blog/posts/collected-thoughts-3/index.html</loc>
-    <lastmod>2023-06-03T03:26:30.174Z</lastmod>
+    <lastmod>2023-06-22T19:11:44.876Z</lastmod>
   </url>
   <url>
     <loc>https://vin136.github.io/blog/posts/DeepRl-prac/index.html</loc>
-    <lastmod>2023-06-03T03:26:30.693Z</lastmod>
+    <lastmod>2023-06-22T19:11:45.440Z</lastmod>
   </url>
   <url>
     <loc>https://vin136.github.io/blog/index.html</loc>
-    <lastmod>2023-06-03T03:26:31.234Z</lastmod>
+    <lastmod>2023-06-22T19:11:46.016Z</lastmod>
   </url>
   <url>
     <loc>https://vin136.github.io/blog/about.html</loc>
-    <lastmod>2023-06-03T03:26:31.488Z</lastmod>
+    <lastmod>2023-06-22T19:11:46.259Z</lastmod>
   </url>
 </urlset>

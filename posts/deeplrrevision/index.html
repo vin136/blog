@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.361">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vinay Varma">
+<meta name="dcterms.date" content="2023-06-18">
+
+<title>Vinay Varma - Deep Learning - Quick Revision</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Vinay Varma</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/vin136" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/vinnuvinay008" rel="" target=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/vinayvarma-k/" rel="" target=""><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#basics" id="toc-basics" class="nav-link active" data-scroll-target="#basics">Basics</a>
+  <ul>
+  <li><a href="#infotheory" id="toc-infotheory" class="nav-link" data-scroll-target="#infotheory">Infotheory</a></li>
+  </ul></li>
+  <li><a href="#deep-learning" id="toc-deep-learning" class="nav-link" data-scroll-target="#deep-learning">Deep Learning</a>
+  <ul>
+  <li><a href="#general-techniques" id="toc-general-techniques" class="nav-link" data-scroll-target="#general-techniques">General techniques</a></li>
+  <li><a href="#architecture-abstractions" id="toc-architecture-abstractions" class="nav-link" data-scroll-target="#architecture-abstractions">Architecture abstractions</a></li>
+  <li><a href="#optimization" id="toc-optimization" class="nav-link" data-scroll-target="#optimization">Optimization</a></li>
+  <li><a href="#optimization-refer-cowans-notes" id="toc-optimization-refer-cowans-notes" class="nav-link" data-scroll-target="#optimization-refer-cowans-notes">Optimization (refer cowan’s notes)</a></li>
+  <li><a href="#transformers" id="toc-transformers" class="nav-link" data-scroll-target="#transformers">Transformers</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Deep Learning - Quick Revision</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">ml</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vinay Varma </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 18, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="basics" class="level1">
+<h1>Basics</h1>
+<section id="infotheory" class="level2">
+<h2 class="anchored" data-anchor-id="infotheory">Infotheory</h2>
+<p><strong>Entropy</strong></p>
+<p>The entropy of a discrete random variable X with distribution p over K states is defined by:</p>
+<p><span class="math display">\[ H(X) = -\sum_{i=1}^{K} p(i) \log_{2}(p(i)) \]</span></p>
+<p><strong>Cross-entropy</strong></p>
+<p><span class="math display">\[ H(p, q) = -\sum_{i=1}^{K} p(i) \log_{2}(q(i)) \]</span></p>
+<p><strong>KL divergence</strong></p>
+<p><span class="math display">\[ D_{KL}(p \| q) = \sum_{i=1}^{K} p(i) \log_{2}\left(\frac{p(i)}{q(i)}\right) \]</span></p>
+<p>Relation:</p>
+<p><span class="math display">\[ H(p, q) = H(P) + D_{KL}(p \| q) \]</span></p>
+<p><strong>Why do we use KL for knowledge distillation ?</strong></p>
+<p>In case of distillation, H(P) is the teacher’s entropy,where there is no updates/gradient, thus makes no sense to include it in loss formulation.</p>
+</section>
+</section>
+<section id="deep-learning" class="level1">
+<h1>Deep Learning</h1>
+<section id="general-techniques" class="level2">
+<h2 class="anchored" data-anchor-id="general-techniques">General techniques</h2>
+<ol type="1">
+<li>Why random initialization ?</li>
+</ol>
+<p><strong>2. How to deal with exploding gradient ?</strong></p>
+<p>Clip gradients</p>
+<ol start="3" type="1">
+<li><strong>How to deal with vanishing gradient ?</strong></li>
+</ol>
+<ul>
+<li><p>Batchnorm/layer norm etc: Ensure activations are always in desired range. Say when using sigmoid/tanh, if the activations are closer to <code>0</code>,we’ll have good(close to <code>1</code>) gradient, thus no vanishing.</p></li>
+<li><p>Architecture : modify it to have additive updates. (Residual connections)</p></li>
+<li><p>Modify activations:</p>
+<pre><code>- Relu: `pros`: no saturation `cons`: Dead lelu, if weights are large negative,some neurons turn off and never get updated. UPDATES: LEAKY RELU,ELU etc</code></pre></li>
+<li><p>Careful initialization</p>
+<pre><code>Xavier Initialization : control the variance of both activations and the gradient.(just a heuristic)
+- Assumes no non-linearity, and weights,inputs are independent, with mean zero.
+- Keep the output variance same as input</code></pre>
+<p><img src="Images/xavier.png" alt="map" width="800"></p></li>
+</ul>
+<ol start="4" type="1">
+<li><strong>Ways to deal with overfitting ?</strong></li>
+</ol>
+<ul>
+<li><p>Weight-decay</p></li>
+<li><p>Dropout</p>
+<ul>
+<li><p>Dropout : Activations shouldn’t depend on any one of the weights. Randomly drop some weights during training.(introduce noise in an unbiased way) Two ways to implement:</p></li>
+<li><p>1.Training: preserve the weights by dividing active ones by 1-p(prob of active).</p></li>
+</ul>
+<p><img src="Images/dropout.png" alt="map" width="500"></p>
+<ul>
+<li>1.Test: Just not use dropout</li>
+</ul></li>
+</ul>
+<hr>
+<pre><code>- 2.Training: No adjustmet
+- 2.Test: remove dropout,Multiply weights by (1-p)</code></pre>
+</section>
+<section id="architecture-abstractions" class="level2">
+<h2 class="anchored" data-anchor-id="architecture-abstractions">Architecture abstractions</h2>
+<p>Various architectures are our ways of encoding our inductive biases.</p>
+<ul>
+<li>translational invariance: Output is same irrespective of the location in cnn’s. Achieved by <code>pooling</code></li>
+<li>translational equivariance: shift+conv = conv+shift</li>
+</ul>
+<p>Natural signals share 3 properties</p>
+<p><code>Locality</code>: easier to predict future using recent past than earlier. =&gt; Sparsity</p>
+<p><code>Stationarity</code>: same patterns repeat again and again. =&gt; Weight sharing.</p>
+<p><code>Compositionality</code>: =&gt; Deeper networks.</p>
+</section>
+<section id="optimization" class="level2">
+<h2 class="anchored" data-anchor-id="optimization">Optimization</h2>
+</section>
+<section id="optimization-refer-cowans-notes" class="level2">
+<h2 class="anchored" data-anchor-id="optimization-refer-cowans-notes">Optimization (refer cowan’s notes)</h2>
+<p>Gradient descent =&gt; Taylor series expansion : F(x) ≈ F(xt) + F′(xt)(x − xt) + 1/2F′′(xt)(x − xt)^2.</p>
+<p><code>Direction</code> : This tells under second order approximation =&gt; move opposite to direction of grad =&gt; func value decreases.</p>
+<p><code>Amount</code> : How much to move =&gt; roughly on the order of <code>inverse second derivative</code>. More curvature= move slowly.</p>
+<p>Momentum: At any point continue moving a small part in the direction previously moved.</p>
+<p><span class="math display">\[x_{t+1} = x_t − α_t∇F (x_t) + β_t(x_{t} − x_{t−1})\]</span></p>
+<p><code>Intuition</code>: Using the information of both current and previous gradient = approximating second order methods/ proxy estimation of curvature.</p>
+<p>What’s Good Step-Size ?</p>
+<ul>
+<li>generally it should be inversely proprotional to the curvature</li>
+</ul>
+<p><code>ADAGRAD</code> : If the past updates for a component has been smaller =&gt; less curvature =&gt; can use higher learning rate. Method: <a href="https://github.com/vin136/Machine-Learning-Interview-Questions/blob/main/nbs/Screen%20Shot%202023-04-17%20at%205.57.35%20PM.png">Refer</a></p>
+<p>Flaw: because the accumulated gradients Git are perpetually increasing by positive amounts, the stepsizes will be decreasing to zero. If this happens to quickly, then the algorithm effectively ‘freezes’ and is unable to improve.</p>
+<p><code>RMS PROP</code>: Instead of taking sum of past gradients along a direction, we can take decaying average <a href="https://github.com/vin136/Machine-Learning-Interview-Questions/blob/main/nbs/Screen%20Shot%202023-04-17%20at%206.01.27%20PM.png">METHOD</a></p>
+<p><code>ADAM</code>: <a href="https://github.com/vin136/Machine-Learning-Interview-Questions/blob/main/nbs/Screen%20Shot%202023-04-17%20at%206.11.31%20PM.png">RMSPROP+ MOMENTUM</a></p>
+<p>direction =&gt; momentum</p>
+<p>learning rate for each direction =&gt; rmsprop</p>
+<p>momentum+rmsprop = adam.</p>
+</section>
+<section id="transformers" class="level2">
+<h2 class="anchored" data-anchor-id="transformers">Transformers</h2>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

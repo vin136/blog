@@ -1,5 +1,61 @@
 [
   {
+    "objectID": "posts/experimentation/index.html",
+    "href": "posts/experimentation/index.html",
+    "title": "Experimentation in the Wild : Tools",
+    "section": "",
+    "text": "1. Hypothesis testing\nHere the business is all about studying the effect of treatments. I skip the motivation and other formal sections and cut right through the meat. Also we make no comments on experiment design. We pretend someone else administered the experiment and gave us the data. We’ll learn tools to analyze this data and make sound conclusions.\nStatistical Significance: Calculate how often pure chance can let you observe the effect as large as seen in the observed data, in the absence of any real effect(null hypothesis).\nBased off this value, we decide to whether reject or accet null hypothesis.\nProblem\nLet’s say we made a code change to improve the latency of the system. Here are the readings before and after. Avg. latency after the change is 20.33 ms while before is 25ms. Is this difference significant enough to conclude that our change improved the latency ?\nbefor: [30,25,18]\nafter : [20,21,22]\nApproach:\n\nDecide what do we mean by significant enough ?\n\n\ntest-statistic T: A function of observed data whose value represents the result of the test.\n\nLet’s use difference of means. (T = mean(before) - mean(after), the larger the T, the stronger the effect)\n\nBe precise about what do you mean by null hypothesis\n\nLet \\(\\mu_0\\), \\(\\mu_1\\) be the mean latency before and after the code change.\n\\(H_0\\) (null hypothesis) : \\(\\mu_0\\) = \\(\\mu_1\\)\nNow the alternative of interest(what we anticipate)\n\\(H_1\\) : \\(\\mu_0\\) &gt; \\(\\mu_1\\)\n\nDecide on the significance and conclude\n\nP-value: Probability that a chance alone would produce a test statistic as extreme as the one observed if the null hypothesis is true.\nnull distribution: The distribution of the test statistic if the null-hypothesis is true.\nThe choice of P-value is upto us. Suppose we choose 0.02, that means chance alone could produce a test statistic (24.3-21 =3.3ms)as extreme as the observed one 2 out of 100 times. This assumes an underlying generative process of the data(under null hypothesis). If the observed\n\nimport numpy as np\n\n\nb = np.array([30,25,18])\na = np.array([20,21,22])\n\nthresh = 0.02\n\nt = np.mean(b)-np.mean(a)\n\nSimulate the generative process under null. Given there is no difference in latency before and after the code change, our values after the change could be any of the \\(6 \\choose 3\\) possibilities from [30,25,18,20,21,22]. Let’s calulate the P-value of observing 3.3 or more just by pure chance.\n\nfrom itertools import permutations\nc = [30,25,18,20,21,22]\n#list of all possible permutations\nl = list(permutations(c))\nis_extreme = []\nfor perm in l:\n    pos_b = perm[:3]\n    pos_a = perm[3:]\n    pos_t = np.mean(pos_b)-np.mean(pos_a)\n    is_extreme.append(pos_t&gt;=t)\n\n\np_value = np.mean(is_extreme)\np_value\n\n0.25\n\n\nConclusion 25% of times,chance alone would have given us the observed latency improvement(or more). Since this value is greater than the threshold, we fail to reject the null. We’ll not belive that our code change significantly improved the latency times.\nNote: Sometimes we might not be able to genrate all possibilities, then we resort to sampling. or We could resort to approximations based on some assumptions.\nPermutation Testing\nPool the m + n values\nrepeat\ndraw a resample of size m without replacement use remaining n observations for the other sample calculate the test statistic\nuntil we have enough samples.\nCalculate the #times random statistic exceeds the observed. Multiply by 2 for a two-sided test.\nThis post covers all the tools needed in the practice.\n\n\nA/B Testing\nScenario: We have two or more treatments and we seek to measure which one of those is good on average.\nConcretely, let’s take two machine learning models that we have trained Model1 and Model2. Though we’ve tested them on our test set, we still don’t know how they’ll do on production environment.\n\ndef"
+  },
+  {
+    "objectID": "posts/deeplrrevision/index.html",
+    "href": "posts/deeplrrevision/index.html",
+    "title": "Deep Learning - Quick Revision",
+    "section": "",
+    "text": "Entropy\nThe entropy of a discrete random variable X with distribution p over K states is defined by:\n\\[ H(X) = -\\sum_{i=1}^{K} p(i) \\log_{2}(p(i)) \\]\nCross-entropy\n\\[ H(p, q) = -\\sum_{i=1}^{K} p(i) \\log_{2}(q(i)) \\]\nKL divergence\n\\[ D_{KL}(p \\| q) = \\sum_{i=1}^{K} p(i) \\log_{2}\\left(\\frac{p(i)}{q(i)}\\right) \\]\nRelation:\n\\[ H(p, q) = H(P) + D_{KL}(p \\| q) \\]\nWhy do we use KL for knowledge distillation ?\nIn case of distillation, H(P) is the teacher’s entropy,where there is no updates/gradient, thus makes no sense to include it in loss formulation."
+  },
+  {
+    "objectID": "posts/deeplrrevision/index.html#infotheory",
+    "href": "posts/deeplrrevision/index.html#infotheory",
+    "title": "Deep Learning - Quick Revision",
+    "section": "",
+    "text": "Entropy\nThe entropy of a discrete random variable X with distribution p over K states is defined by:\n\\[ H(X) = -\\sum_{i=1}^{K} p(i) \\log_{2}(p(i)) \\]\nCross-entropy\n\\[ H(p, q) = -\\sum_{i=1}^{K} p(i) \\log_{2}(q(i)) \\]\nKL divergence\n\\[ D_{KL}(p \\| q) = \\sum_{i=1}^{K} p(i) \\log_{2}\\left(\\frac{p(i)}{q(i)}\\right) \\]\nRelation:\n\\[ H(p, q) = H(P) + D_{KL}(p \\| q) \\]\nWhy do we use KL for knowledge distillation ?\nIn case of distillation, H(P) is the teacher’s entropy,where there is no updates/gradient, thus makes no sense to include it in loss formulation."
+  },
+  {
+    "objectID": "posts/deeplrrevision/index.html#general-techniques",
+    "href": "posts/deeplrrevision/index.html#general-techniques",
+    "title": "Deep Learning - Quick Revision",
+    "section": "General techniques",
+    "text": "General techniques\n\nWhy random initialization ?\n\n2. How to deal with exploding gradient ?\nClip gradients\n\nHow to deal with vanishing gradient ?\n\n\nBatchnorm/layer norm etc: Ensure activations are always in desired range. Say when using sigmoid/tanh, if the activations are closer to 0,we’ll have good(close to 1) gradient, thus no vanishing.\nArchitecture : modify it to have additive updates. (Residual connections)\nModify activations:\n- Relu: `pros`: no saturation `cons`: Dead lelu, if weights are large negative,some neurons turn off and never get updated. UPDATES: LEAKY RELU,ELU etc\nCareful initialization\nXavier Initialization : control the variance of both activations and the gradient.(just a heuristic)\n- Assumes no non-linearity, and weights,inputs are independent, with mean zero.\n- Keep the output variance same as input\n\n\n\nWays to deal with overfitting ?\n\n\nWeight-decay\nDropout\n\nDropout : Activations shouldn’t depend on any one of the weights. Randomly drop some weights during training.(introduce noise in an unbiased way) Two ways to implement:\n1.Training: preserve the weights by dividing active ones by 1-p(prob of active).\n\n\n\n1.Test: Just not use dropout\n\n\n\n- 2.Training: No adjustmet\n- 2.Test: remove dropout,Multiply weights by (1-p)"
+  },
+  {
+    "objectID": "posts/deeplrrevision/index.html#architecture-abstractions",
+    "href": "posts/deeplrrevision/index.html#architecture-abstractions",
+    "title": "Deep Learning - Quick Revision",
+    "section": "Architecture abstractions",
+    "text": "Architecture abstractions\nVarious architectures are our ways of encoding our inductive biases.\n\ntranslational invariance: Output is same irrespective of the location in cnn’s. Achieved by pooling\ntranslational equivariance: shift+conv = conv+shift\n\nNatural signals share 3 properties\nLocality: easier to predict future using recent past than earlier. =&gt; Sparsity\nStationarity: same patterns repeat again and again. =&gt; Weight sharing.\nCompositionality: =&gt; Deeper networks."
+  },
+  {
+    "objectID": "posts/deeplrrevision/index.html#optimization",
+    "href": "posts/deeplrrevision/index.html#optimization",
+    "title": "Deep Learning - Quick Revision",
+    "section": "Optimization",
+    "text": "Optimization"
+  },
+  {
+    "objectID": "posts/deeplrrevision/index.html#optimization-refer-cowans-notes",
+    "href": "posts/deeplrrevision/index.html#optimization-refer-cowans-notes",
+    "title": "Deep Learning - Quick Revision",
+    "section": "Optimization (refer cowan’s notes)",
+    "text": "Optimization (refer cowan’s notes)\nGradient descent =&gt; Taylor series expansion : F(x) ≈ F(xt) + F′(xt)(x − xt) + 1/2F′′(xt)(x − xt)^2.\nDirection : This tells under second order approximation =&gt; move opposite to direction of grad =&gt; func value decreases.\nAmount : How much to move =&gt; roughly on the order of inverse second derivative. More curvature= move slowly.\nMomentum: At any point continue moving a small part in the direction previously moved.\n\\[x_{t+1} = x_t − α_t∇F (x_t) + β_t(x_{t} − x_{t−1})\\]\nIntuition: Using the information of both current and previous gradient = approximating second order methods/ proxy estimation of curvature.\nWhat’s Good Step-Size ?\n\ngenerally it should be inversely proprotional to the curvature\n\nADAGRAD : If the past updates for a component has been smaller =&gt; less curvature =&gt; can use higher learning rate. Method: Refer\nFlaw: because the accumulated gradients Git are perpetually increasing by positive amounts, the stepsizes will be decreasing to zero. If this happens to quickly, then the algorithm effectively ‘freezes’ and is unable to improve.\nRMS PROP: Instead of taking sum of past gradients along a direction, we can take decaying average METHOD\nADAM: RMSPROP+ MOMENTUM\ndirection =&gt; momentum\nlearning rate for each direction =&gt; rmsprop\nmomentum+rmsprop = adam."
+  },
+  {
+    "objectID": "posts/deeplrrevision/index.html#transformers",
+    "href": "posts/deeplrrevision/index.html#transformers",
+    "title": "Deep Learning - Quick Revision",
+    "section": "Transformers",
+    "text": "Transformers"
+  },
+  {
     "objectID": "posts/collected-thoughts-1/index.html",
     "href": "posts/collected-thoughts-1/index.html",
     "title": "Think on these #1",
@@ -403,7 +459,7 @@
     "href": "index.html",
     "title": "Posts",
     "section": "",
-    "text": "Linear Algebra: 0.1\n\n\n\n\n\n\n\nmaths-for-ml\n\n\n\n\n\n\n\n\n\n\n\nJan 11, 2022\n\n\nVinay Varma\n\n\n\n\n\n\n  \n\n\n\n\nThink on these: On building things\n\n\n\n\n\n\n\nlife\n\n\n\n\n\n\n\n\n\n\n\nJun 18, 2021\n\n\nVinay Varma\n\n\n\n\n\n\n  \n\n\n\n\nThink on these #2\n\n\n\n\n\n\n\nlife\n\n\n\n\n\n\n\n\n\n\n\nMay 18, 2021\n\n\nVinay Varma\n\n\n\n\n\n\n  \n\n\n\n\nDeep Reinforcement Learning - Theory\n\n\n\n\n\n\n\nml\n\n\nrl\n\n\n\n\n\n\n\n\n\n\n\nFeb 21, 2021\n\n\nVinay Varma\n\n\n\n\n\n\n  \n\n\n\n\nDeep Reinforcement Learning - Practice\n\n\n\n\n\n\n\nml\n\n\nrl\n\n\n\n\n\n\n\n\n\n\n\nFeb 21, 2021\n\n\nVinay Varma\n\n\n\n\n\n\n  \n\n\n\n\nThink on these #1\n\n\n\n\n\n\n\nlife\n\n\n\n\n\n\n\n\n\n\n\nSep 28, 2020\n\n\nVinay Varma\n\n\n\n\n\n\nNo matching items"
+    "text": "Deep Learning - Quick Revision\n\n\n\n\n\n\n\nml\n\n\n\n\n\n\n\n\n\n\n\nJun 18, 2023\n\n\nVinay Varma\n\n\n\n\n\n\n  \n\n\n\n\nExperimentation in the Wild : Tools\n\n\n\n\n\n\n\nml\n\n\ncausal-inference\n\n\n\n\n\n\n\n\n\n\n\nJun 4, 2023\n\n\nVinay Varma\n\n\n\n\n\n\n  \n\n\n\n\nLinear Algebra: 0.1\n\n\n\n\n\n\n\nmaths-for-ml\n\n\n\n\n\n\n\n\n\n\n\nJan 11, 2022\n\n\nVinay Varma\n\n\n\n\n\n\n  \n\n\n\n\nThink on these: On building things\n\n\n\n\n\n\n\nlife\n\n\n\n\n\n\n\n\n\n\n\nJun 18, 2021\n\n\nVinay Varma\n\n\n\n\n\n\n  \n\n\n\n\nThink on these #2\n\n\n\n\n\n\n\nlife\n\n\n\n\n\n\n\n\n\n\n\nMay 18, 2021\n\n\nVinay Varma\n\n\n\n\n\n\n  \n\n\n\n\nDeep Reinforcement Learning - Theory\n\n\n\n\n\n\n\nml\n\n\nrl\n\n\n\n\n\n\n\n\n\n\n\nFeb 21, 2021\n\n\nVinay Varma\n\n\n\n\n\n\n  \n\n\n\n\nDeep Reinforcement Learning - Practice\n\n\n\n\n\n\n\nml\n\n\nrl\n\n\n\n\n\n\n\n\n\n\n\nFeb 21, 2021\n\n\nVinay Varma\n\n\n\n\n\n\n  \n\n\n\n\nThink on these #1\n\n\n\n\n\n\n\nlife\n\n\n\n\n\n\n\n\n\n\n\nSep 28, 2020\n\n\nVinay Varma\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
